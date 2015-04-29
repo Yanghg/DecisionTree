@@ -12,12 +12,17 @@ class TreeNode:
             self.children.append(subtree)
     
     def bestAttribute(self, examples):
-        for examples
-        return "hehe", []
+        maxGain = 
+        
+        for x in examples[0]:
+            gain, rule = handleAttribute(examples, x)
+
+        return "hehe", rule
 
     def getSubExamples(self, examples):
         return 
-    def handleAttribute(self, examples, name):
+
+def handleAttribute(examples, name):
         return 
 
 def readFile(fileName):
