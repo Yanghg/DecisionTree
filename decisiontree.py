@@ -9,7 +9,7 @@ class TreeNode:
         self.rules = splitRules
         self.name = name
         for x in splitRules: 
-            subExamples = getSubExamples(x)
+            subExamples = getSubExamples(x,examples)
             child = Node(subExamples)
             self.children.append(child)
     
