@@ -1,13 +1,11 @@
-import csv
-
 class TreeNode:
-    def __init__(self, examples):
-        self.name = ""
+    def __init__(self,examples,parent):
         self.children = []
-        self.rules = []
         name, splitRules = bestAttribute(examples)
         self.rules = splitRules
         self.name = name
+        self.parent = parent
+
         for x in splitRules: 
             subExamples = getSubExamples(x,examples)
             child = Node(subExamples)
@@ -27,11 +25,3 @@ class TreeNode:
 
     def getSubExamples(self, examples):
         return subExamples
-
-def handleAttribute(examples, name):
-        return gain, rule
-
-def readFile(fileName):
-    # "rb" is read only
-    csvReader = csv.reader(open(fileName,"rb"),delimiter=',') 
-    return list(csvReader)
