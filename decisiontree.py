@@ -1,10 +1,23 @@
 import csv
 
 class TreeNode:
-    def __init__(self, examples, name="NULL", children=[]):
+    def __init__(self, examples):
+        self.name = "";
+        self.children = [];
+        name, rule = bestAttribute(examples)
         self.name = name
-        self.children = children
+        for x in rule: 
+            subExamples = getSubExamples(x)
+            subtree = Node(subExamples)
+            self.children.append(subtree)
+    
+    def bestAttribute(self, examples):
 
+        return "hehe", []
+
+    def getSubExamples(self, examples):
+
+    def handleAttribute(self, examples, name):
 
 def readFile(fileName):
     # "rb" is read only
