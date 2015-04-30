@@ -2,14 +2,12 @@
 import csv
 from decisiontree import TreeNode
 
-#examples = [["aa","bb","cc"][1 2 3][4 5 6]....[7 8 9]]
+#examples = [["aa","bb","cc"],[True,False,True],[1 2 3],[4 5 6]....[7 8 9]]
 
 
 def handleAttribute(examples, name):
     return gain, rule
-def yeah():
-    a='ssssss'
-    print a
+
 def readFile(fileName):
     # "rb" is read only
     csvReader = csv.reader(open(fileName,"rb"),delimiter=',') 
@@ -57,8 +55,7 @@ def readFile(fileName):
     					else:
     						mapsW[j][examples[i+1][j]]=1
     					if mostcfW[j][0]<mapsW[j][examples[i+1][j]] :
-                            			aaa='111111111111'
-                            			print aaa
+
 						if len(mostcfW[j])==1:
 							mostcfW[j].append(examples[i+1][j])
 						else:
@@ -70,8 +67,7 @@ def readFile(fileName):
     					else:
     						mapsL[j][examples[i+1][j]]=1
     					if mostcfL[j][0]<mapsL[j][examples[i+1][j]] :
-                            			bbb=' 2222222222'
-                            			print bbb
+
 						if len(mostcfL[j])==1:
 							mostcfL[j].append(examples[i+1][j])
 						else:
@@ -86,8 +82,7 @@ def readFile(fileName):
     					else:
     						mapsW[j][examples[i+1][j]]=1
     					if mostcfW[j][0]<mapsW[j][examples[i+1][j]] :
-                         			ccc='33333333333'
-                            			print ccc
+
 						if len(mostcfW[j])==1:
 							mostcfW[j].append(examples[i+1][j])
 						else:
@@ -99,8 +94,7 @@ def readFile(fileName):
     					else:
     						mapsL[j][examples[i+1][j]]=1
     					if mostcfL[j][0]<mapsL[j][examples[i+1][j]] :
-                            			ddd='4444444444444'
-                            			print ddd
+
 						if len(mostcfL[j])==1:
 							mostcfL[j].append(examples[i+1][j])
 						else:
@@ -120,6 +114,10 @@ def readFile(fileName):
             examples[a+1][b]=mostcfL[b][1]
     return examples
 
+def printTree(root):
+    return 
 
-
-
+def solve(fileName):
+    examples = readFile(fileName)
+    root = TreeNode(examples,None)
+    return root
