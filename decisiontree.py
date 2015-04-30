@@ -26,5 +26,8 @@ class TreeNode:
     def handleAttribute(examples, name):
         return gain, rule
 
+
     def getSubExamples(self, examples):
         return subExamples
+
+
