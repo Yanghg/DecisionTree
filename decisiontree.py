@@ -37,8 +37,10 @@ class TreeNode:
         
         return gain, rule
 
+
     def getSubExamples(self, examples):
         return subExamples
+
 
 #helper functions for TreeNode class
 def calculateEntropy(data):
@@ -58,8 +60,6 @@ def calculateEntropy(data):
         entropy -= prob*math.log(prob,2)
 
     return entropy
-
-
 
 
 
