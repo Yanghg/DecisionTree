@@ -34,13 +34,15 @@ class TreeNode:
     
         #get attribute with largest information gain
         for at in range(len(attributes)):
-            gain, rule = self.handleAttribute(examples, at, classEntropy)
-            if gain == -10:
-                return self.name, []
-            if gain > maxGain:
                 maxGain = gain
-                bestRule = rule
-                bestName = attributes(at)
+            if examples[2][at] != True:
+                gain, rule = self.handleAttribute(examples, at, classEntropy)
+                if gain == -10:
+                    return self.name, []
+                if gain > maxGain:
+                    maxGain = gain
+                    bestRule = rule
+                    bestName = attributes[at]
         return bestName, bestRule
 
     def handleAttribute(self, examples, atIndex, classEntropy):
@@ -53,8 +55,8 @@ class TreeNode:
         conditionalEnt = 0
 
         #if unused norminal attribute       
-        if attributesType[atIndex] == True and used[atIndex] == False: 
-            used[atIndex] = True
+        if attributesType[atIndex] == True: 
+            examples[2][atIndex] = True
             #build dictionary for different attribute value
             for x in examplesData:
                     current = x[atIndex]
