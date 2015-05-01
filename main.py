@@ -33,7 +33,12 @@ def readFile(fileName,type):
         mapsL=[]#dict for lose side
         delation=[]
         # find value type: discrete or continuous
+        examples.append([])
         for i in range(0,dlength):
+            if i ==0:
+                examples[0].append(data[0][0][:])
+            else:
+                examples[0].append(data[0][i][1:])
             temp=data[1][i]
             mapsL.append({})
             mapsW.append({})
@@ -55,7 +60,6 @@ def readFile(fileName,type):
                         Dis_Cons.append(False)
                     else:
                         Dis_Cons.append(True)
-        examples.append(data[0][:])
         examples.append(Dis_Cons[:])
         del examples[1][dlength-1]
         examples.append([])
@@ -133,8 +137,13 @@ def readFile(fileName,type):
     else:
         Dis_Cons = []
         delation = []
+        examples.append([])
         for i in range(0,dlength):
             temp=data[1][i]
+            if i ==0:
+                examples[0].append(data[0][0][:])
+            else:
+                examples[0].append(data[0][i][1:])
             if temp!= '?':
                 if temp.find('.')!=-1:
                     Dis_Cons.append(False)
@@ -147,10 +156,8 @@ def readFile(fileName,type):
                         Dis_Cons.append(False)
                     else:
                         Dis_Cons.append(True)
-        examples.append(data[0][:])
-        examples.append(data[0][:])
         examples.append(Dis_Cons[:])
-        del examples[1][dlength-1]
+        # del examples[1][dlength]
         examples.append([])
         for i in range(0,dlength-1):
             examples[2].append(False)
