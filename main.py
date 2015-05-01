@@ -1,14 +1,6 @@
 #-*- coding: UTF-8 -*-
 import csv
 import xml.etree.cElementTree as ET
-root = ET.Element("root")
-doc = ET.SubElement(root, "doc")
-
-ET.SubElement(doc, "field1", name="blah").text = "some value1"
-ET.SubElement(doc, "field2", name="asdfasd").text = "some vlaue2"
-
-tree = ET.ElementTree(root)
-tree.write("filename.xml")
 from decisiontree import TreeNode
 
 #examples = [["aa","bb","cc"],[True,False,True],[False,True,False],[1 2 3],[4 5 6]....[7 8 9]]
