@@ -1,5 +1,6 @@
 #-*- coding: UTF-8 -*-
 import csv
+import xml.etree.cElementTree as ET
 from decisiontree import TreeNode
 
 #examples = [["aa","bb","cc"],[True,False,True],[False,True,False],[1 2 3],[4 5 6]....[7 8 9]]
@@ -101,6 +102,7 @@ def readFile(fileName):
                         #         mostcfW[j][0]=mapsW[j][examples[i+2][j]]
                         #         mostcfW[j][1]=examples[i+2][j]	
                     else:
+
                         ave4L[j].append(examples[i+2][j])
                         mostSfL[j]=(mostSfL[j]*(len(ave4L[j])-1)+ave4L[j][-1])/len(ave4L[j])
                         # if mapsL[j].has_key(examples[i+2][j])==True:
@@ -114,6 +116,7 @@ def readFile(fileName):
                         #     else:
                         #         mostcfL[j][0]=mapsL[j][examples[i+2][j]]
                         #         mostcfL[j][1]=examples[i+2][j]
+
             else:
                 if j==dlength-1:
                     delation.append(i+2)
@@ -146,7 +149,21 @@ def readFile(fileName):
     return examples
 
 def printTree(root):
-    return
+    printSet1 = [root]
+    printSet2 = []
+    size = 1
+    while(printSet1):
+        while(printSet1):
+            temp = printSet1.pop(0)
+            print temp.name+" ",
+            for child in temp.children:
+                printSet2.append(child)
+        printSet1 = printSet2
+        printSet2 = []
+        size += len(printSet1)
+        print ""
+    return size
+
 
 def solve(fileName,gapNum):
     examples = readFile(fileName)
