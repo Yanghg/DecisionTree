@@ -1,12 +1,20 @@
 import math
 
 class TreeNode:
-    def __init__(self,examples,parent):
+    def __init__(self,examples,parent,minExampleNum=1):
         self.children = []
         name, splitRules = self.bestAttribute(examples)
         self.rules = splitRules
         self.labelName = name
         self.parent = parent
+
+        #set the minimum height of an example set
+        if parent:
+            self.minExampleNum = parent.minExampleNum
+        else:
+            self.minExampleNum = minExampleNum
+
+        if self.examples1stCheck(examples):
 
         for x in splitRules: 
             subExamples = self.getSubExamples(x,examples)
@@ -21,9 +29,11 @@ class TreeNode:
         attributes = examples[0][:-1]
 
         #calculate outcome gain
+
         classEntropy = self.calculateEntropy(examples[3:])
         if classEntropy == 0:
             # over
+
 
         #get attribute with largest information gain
         for at in range(len(attributes)):
@@ -68,6 +78,26 @@ class TreeNode:
 
     def getSubExamples(self, examples):
         return subExamples
+
+    def examples1stCheck(self,examples):
+        visitedList = examples[2]
+        indexList = []
+        for i in range(len(visitedList)):
+            if visitedList[i]:
+                indexList.append(i)
+        if len(indexList) == 0:
+            return False
+        if len(examples) <= self.minExampleNum+3:
+            return False
+        width = len(examples[3])
+        zeroNum = 0
+        oneNum = 0
+        for i in range(3,len(examples)):
+            zeroNum += (1-examples[i][width-1])
+            oneNum += examples[i][width-1]
+        if zeroNum * oneNum == 0:
+            return False
+        return True 
 
 
     #helper functions for TreeNode class #consider 0
