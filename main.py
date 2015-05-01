@@ -194,7 +194,12 @@ def prettify(elem):
 def generateXMLLoop(root,topTag):
     for child in root.children:
         childTag = SubElement(topTag, child.name)
-        childTag.text = "0"
+        if child.parentRule[0] == "=":
+            childTag.text = root.name + " equal "+child.parentRule[1:]
+        elif child.parentRule[0] == ">":
+            childTag.text = root.name + " above "+child.parentRule[1:]
+        else: 
+            childTag.text = root.name + " below "+child.parentRule[1:]
         generateXMLLoop(child,childTag)
 
 def generateXMLFile(root):
