@@ -1,7 +1,7 @@
 import math,random
 
 class TreeNode:
-    def __init__(self,examples,parent,gapNum=1,minExampleNum=1):
+    def __init__(self,examples,parent,minExampleNum=1,gapNum=1):
         self.children = []
         self.rule = []
         self.name = ""

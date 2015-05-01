@@ -1,5 +1,14 @@
 #-*- coding: UTF-8 -*-
 import csv
+import xml.etree.cElementTree as ET
+root = ET.Element("root")
+doc = ET.SubElement(root, "doc")
+
+ET.SubElement(doc, "field1", name="blah").text = "some value1"
+ET.SubElement(doc, "field2", name="asdfasd").text = "some vlaue2"
+
+tree = ET.ElementTree(root)
+tree.write("filename.xml")
 from decisiontree import TreeNode
 
 #examples = [["aa","bb","cc"],[True,False,True],[False,True,False],[1 2 3],[4 5 6]....[7 8 9]]
@@ -95,7 +104,6 @@ def readFile(fileName):
                         else:
                             mapsL[j][examples[i+2][j]]=1
                         if mostcfL[j][0]<mapsL[j][examples[i+2][j]] :
-
                             if len(mostcfL[j])==1:
                                 mostcfL[j].append(examples[i+2][j])
                             else:
@@ -122,7 +130,21 @@ def readFile(fileName):
     return examples
 
 def printTree(root):
-    return
+    printSet1 = [root]
+    printSet2 = []
+    size = 1
+    while(printSet1):
+        while(printSet1):
+            temp = printSet1.pop(0)
+            print temp.name+" ",
+            for child in temp.children:
+                printSet2.append(child)
+        printSet1 = printSet2
+        printSet2 = []
+        size += len(printSet1)
+        print ""
+    return size
+
 
 def solve(fileName,gapNum):
     examples = readFile(fileName)
