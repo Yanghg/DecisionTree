@@ -137,4 +137,5 @@ def validation(fileName,root):
     for i in range(0,len(stat)):
         missum+=stat[i]
     accuracy=float(missum)/float(len(testdata)-3)
+    accuracy=1-accuracy
     return accuracy
