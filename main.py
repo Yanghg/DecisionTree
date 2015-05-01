@@ -126,7 +126,7 @@ def printTree(root):
 
 def solve(fileName,percentage):
     examples = readFile(fileName)
-    root = TreeNode(examples,None)
+    root = TreeNode(examples,None,max((len(examples)-3)*0.001,1))
     return root
 
 def validation(fileName,root):

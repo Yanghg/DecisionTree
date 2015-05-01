@@ -152,10 +152,10 @@ class TreeNode:
             if visitedList[i]:
                 indexList.append(i)
         if len(indexList) == 0:
-            self.setNameByResult()
+            self.setNameByResult(examples)
             return False
         if len(examples) <= self.minExampleNum+3:
-            self.setNameByResult()
+            self.setNameByResult(examples)
             return False
         width = len(examples[3])
         zeroNum = 0
@@ -164,7 +164,7 @@ class TreeNode:
             zeroNum += (1-examples[i][width-1])
             oneNum += examples[i][width-1]
         if zeroNum * oneNum == 0:
-            self.setNameByResult()
+            self.setNameByResult(examples)
             return False
         return True 
 
