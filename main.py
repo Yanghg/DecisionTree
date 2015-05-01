@@ -124,9 +124,9 @@ def readFile(fileName):
 def printTree(root):
     return
 
-def solve(fileName,percentage):
+def solve(fileName,gapNum):
     examples = readFile(fileName)
-    root = TreeNode(examples,None,max((len(examples)-3)*0.001,1))
+    root = TreeNode(examples,None,max((len(examples)-3)*0.001,1),gapNum)
     return root
 
 def validation(fileName,root):

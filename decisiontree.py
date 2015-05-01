@@ -1,7 +1,7 @@
 import math,random
 
 class TreeNode:
-    def __init__(self,examples,parent,minExampleNum=1):
+    def __init__(self,examples,parent,gapNum=1,minExampleNum=1):
         self.children = []
         self.rule = []
         self.name = ""
@@ -10,8 +10,10 @@ class TreeNode:
         #set the minimum height of an example set
         if parent:
             self.minExampleNum = parent.minExampleNum
+            self.gapNum = parent.gapNum
         else:
             self.minExampleNum = minExampleNum
+            self.gapNum = gapNum
 
         #first check the examples using rule 1,2 and 3
         if self.examples1stCheck(examples):
@@ -36,13 +38,13 @@ class TreeNode:
         for at in range(len(attributes)):
             if examples[2][at] != True:
                 gain, rule = self.handleAttribute(examples, at, classEntropy)
-                if gain == -10:
+                if gain == 0:
                     return self.name, []
                 if gain > maxGain:
                     maxGain = gain
                     bestRule = rule
                     bestName = attributes[at]
-        if maxGain == 0:
+        if maxGain <= 0:
             self.setNameByResult(examples)
             bestName = self.name 
         return bestName, bestRule
@@ -68,7 +70,7 @@ class TreeNode:
                 splitSet[current].append(x)
             #calculate conditional entropy
             for key in splitSet: 
-                prob = float(len(splitSet[key])/numTotal)
+                prob = float(len(splitSet[key]))/numTotal
                 conditionalEnt += prob * self.calculateEntropy(splitSet[key])
             #calculate information gain
             informationGain = classEntropy - conditionalEnt
@@ -87,13 +89,13 @@ class TreeNode:
             if minVal == maxVal:
                 self.setNameByResult(examples)
                 used[atIndex] = True
-                return -10, splitRules
+                return 0, splitRules
 
             #partition and get gain
             else:
                 partition = minVal
-                increment = (maxVal - minVal)/11.0
-                for i in range(10):
+                increment = (maxVal - minVal)/(self.gapNum+1)
+                for i in range(int(self.gapNum)):
                     partition += increment
                     splitList.append(partition)
                 informationGain = 0
@@ -115,7 +117,7 @@ class TreeNode:
                             tempSet["abovePoint"].append(x)
                     #calculate conditional entropy
                     for key in tempSet: 
-                        prob = float(len(tempSet[key])/numTotal)
+                        prob = float(len(tempSet[key]))/numTotal
                         tempConditionalEnt += prob * self.calculateEntropy(tempSet[key])
                     #calculate information gain
                     tempGain = classEntropy - tempConditionalEnt
