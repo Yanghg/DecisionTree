@@ -183,8 +183,24 @@ class TreeNode:
             self.name = random.choice(["Good","Bad"])
 
     def validate(self,examples,stat):
+        count=0
         if self.name=='Good':
-            for 
+            for i in range(0,len(examples)-3):
+                if examples[i+3][-1]!=1:
+                    count+=1
+            stat.append(count)
+        elif self.name=='bad':
+            for i in range(0,len(examples)-3):
+                if examples[i+3][-1]!=0:
+                    count+=1
+            stat.append(count)
+        else:
+            for i in range(0,len(self.rule)):
+                sub=getSubExample(self.rule[i],examples)
+                self.child[i].validate(sub,stat)
+
+
+
 
 
     #helper functions for TreeNode class #consider 0
