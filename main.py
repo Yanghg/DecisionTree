@@ -2,7 +2,7 @@
 import csv
 from decisiontree import TreeNode
 
-#examples = [["aa","bb","cc"],[True,False,True],[1 2 3],[4 5 6]....[7 8 9]]
+#examples = [["aa","bb","cc"],[True,False,True],[False,True,False],[1 2 3],[4 5 6]....[7 8 9]]
 
 
 def handleAttribute(examples, name):
@@ -44,17 +44,17 @@ def readFile(fileName):
     examples.append(Dis_Cons[:])
     # Turn str to int or float
     for i in range(1,tlength):
-    	examples.append([])
-    	for j in range(0,dlength):
-    		if data[i][j]!='?':
-    			if Dis_Cons[j]==True:
-    				examples[i+1].append(int(data[i][j]))
-    				if data[i][dlength-1].find('1')!=-1:
-    					if mapsW[j].has_key(examples[i+1][j])==True:
-    						mapsW[j][examples[i+1][j]]+=1
-    					else:
-    						mapsW[j][examples[i+1][j]]=1
-    					if mostcfW[j][0]<mapsW[j][examples[i+1][j]] :
+        examples.append([])
+        for j in range(0,dlength):
+            if data[i][j]!='?':
+                if Dis_Cons[j]==True:
+                    examples[i+1].append(int(data[i][j]))
+                    if data[i][dlength-1].find('1')!=-1:
+                        if mapsW[j].has_key(examples[i+1][j])==True:
+                            mapsW[j][examples[i+1][j]]+=1
+                        else:
+                            mapsW[j][examples[i+1][j]]=1
+                        if mostcfW[j][0]<mapsW[j][examples[i+1][j]] :
 
 						if len(mostcfW[j])==1:
 							mostcfW[j].append(examples[i+1][j])
@@ -73,7 +73,6 @@ def readFile(fileName):
 						else:
     							mostcfL[j][0]=mapsL[j][examples[i+1][j]]
     							mostcfL[j][1]=examples[i+1][j]
-
     			else:
     				examples[i+1].append(float(data[i][j]))
     				if data[i][dlength-1].find('1')!=-1:
@@ -86,8 +85,8 @@ def readFile(fileName):
 						if len(mostcfW[j])==1:
 							mostcfW[j].append(examples[i+1][j])
 						else:
-    							mostcfW[j][0]=mapsW[j][examples[i+1][j]]
-    							mostcfW[j][1]=examples[i+1][j]	
+    						mostcfW[j][0]=mapsW[j][examples[i+1][j]]
+    						mostcfW[j][1]=examples[i+1][j]	
     				else:
     					if mapsL[j].has_key(examples[i+1][j])==True:
     						mapsL[j][examples[i+1][j]]+=1
@@ -98,9 +97,8 @@ def readFile(fileName):
 						if len(mostcfL[j])==1:
 							mostcfL[j].append(examples[i+1][j])
 						else:
-    							mostcfL[j][0]=mapsL[j][examples[i+1][j]]
-    							mostcfL[j][1]=examples[i+1][j]
-
+							mostcfL[j][0]=mapsL[j][examples[i+1][j]]
+							mostcfL[j][1]=examples[i+1][j]
     		else:
     			alignpos.append([i,j])
     			examples[i+1].append(-50)
@@ -115,9 +113,9 @@ def readFile(fileName):
     return examples
 
 def printTree(root):
-    return 
+    return
 
-def solve(fileName):
+def solve(fileName,percentage):
     examples = readFile(fileName)
     root = TreeNode(examples,None)
     return root
