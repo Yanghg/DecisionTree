@@ -176,7 +176,7 @@ class TreeNode:
         accuracy = float(oneNum)/(len(examples)-3)
         if accuracy>0.5:
             self.name = "Good"
-        elif: accuracy<0.5:
+        elif accuracy<0.5:
             self.name = "Bad"
         else:
             self.name = random.choice(["Good","Bad"])
