@@ -1,7 +1,7 @@
 #-*- coding: UTF-8 -*-
 import csv
 from xml.etree import ElementTree
-import xml.dom.minidom
+from xml.dom import minidom
 from xml.etree.ElementTree import Element, SubElement, Comment
 import xml.etree.cElementTree as ET
 from decisiontree import TreeNode
@@ -177,50 +177,17 @@ def readFile(fileName,type):
 
     return examples
 
-def printTree(root):
-    '''
-    printSet1 = [root]
-    printSet2 = []
-    size = 1
-    while(printSet1):
-        while(printSet1):
-            temp = printSet1.pop(0)
-            print temp.name+" ",
-            for child in temp.children:
-                printSet2.append(child)
-        printSet1 = printSet2
-        printSet2 = []
-        size += len(printSet1)
-        print ""
-    return size
-    '''
-def indent(elem, level=0):
-    i = "\n" + level*"  "
-    if len(elem):
-        if not elem.text or not elem.text.strip():
-            elem.text = i + "  "
-        if not elem.tail or not elem.tail.strip():
-            elem.tail = i
-        for elem in elem:
-            indent(elem, level+1)
-        if not elem.tail or not elem.tail.strip():
-            elem.tail = i
-    else:
-        if level and (not elem.tail or not elem.tail.strip()):
-            elem.tail = i
-
-
-
 def prettify(elem):
     """Return a pretty-printed XML string for the Element.
     """
     rough_string = ElementTree.tostring(elem, 'utf-8')
     reparsed = minidom.parseString(rough_string)
-    return reparsed.toprettyxml(indent="\t")
+    return reparsed.toprettyxml(indent="  ")
 
 def generateXMLLoop(root,topTag):
     for child in root.children:
         childTag = SubElement(topTag, child.name)
+        childTag.text = "0"
         generateXMLLoop(child,childTag)
 
 def generateXMLFile(root):
