@@ -238,7 +238,7 @@ def solve(fileName,gapNum):
     return root
 
 def validation(fileName,root):
-    testdata = readFile(fileName)
+    testdata = readFile(fileName, 0)
     stat =[]
     missum=0#total wrong.
     root.validate(testdata,stat)
