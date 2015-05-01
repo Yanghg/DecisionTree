@@ -30,15 +30,13 @@ class TreeNode:
         attributes = examples[0][:-1]
 
         #calculate outcome gain
-
         classEntropy = self.calculateEntropy(examples[3:])
-        if classEntropy == 0:
-            setNameByResult(examples)
-            return
-
+    
         #get attribute with largest information gain
         for at in range(len(attributes)):
             gain, rule = self.handleAttribute(examples, at, classEntropy)
+            if gain == -10:
+                return self.name, []
             if gain > maxGain:
                 maxGain = gain
                 bestRule = rule
@@ -84,7 +82,7 @@ class TreeNode:
 
             if minVal == maxVal:
                 setNameByResult(examples)
-                return
+                return -10, splitRules
 
             #partition and get gain
             else:
