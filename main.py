@@ -1,5 +1,7 @@
 #-*- coding: UTF-8 -*-
 import csv
+from xml.etree import ElementTree
+from xml.etree.ElementTree import Element, SubElement, Comment
 import xml.etree.cElementTree as ET
 from decisiontree import TreeNode
 
@@ -122,6 +124,7 @@ def readFile(fileName):
     return examples
 
 def printTree(root):
+    '''
     printSet1 = [root]
     printSet2 = []
     size = 1
@@ -136,6 +139,44 @@ def printTree(root):
         size += len(printSet1)
         print ""
     return size
+    '''
+def indent(elem, level=0):
+    i = "\n" + level*"  "
+    if len(elem):
+        if not elem.text or not elem.text.strip():
+            elem.text = i + "  "
+        if not elem.tail or not elem.tail.strip():
+            elem.tail = i
+        for elem in elem:
+            indent(elem, level+1)
+        if not elem.tail or not elem.tail.strip():
+            elem.tail = i
+    else:
+        if level and (not elem.tail or not elem.tail.strip()):
+            elem.tail = i
+
+
+
+def prettify(elem):
+    """Return a pretty-printed XML string for the Element.
+    """
+    rough_string = ElementTree.tostring(elem, 'utf-8')
+    reparsed = minidom.parseString(rough_string)
+    return reparsed.toprettyxml(indent="\t")
+
+def generateXMLLoop(root):
+    for child in root.children:
+        childTag = SubElement(topTag, child.name)
+        generateXMLLoop(child)
+
+def generateXMLFile(root):
+    rootTag = Element(root.name)
+    generateXMLLoop(root)
+    print prettify(rootTag)
+    tree = ET.ElementTree(rootTag)
+    tree.write("results.xml")
+
+
 
 
 def solve(fileName,gapNum):
