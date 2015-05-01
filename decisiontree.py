@@ -85,6 +85,7 @@ class TreeNode:
                 minVal = min(current, minVal)
                 maxVal = max(current, maxVal)
 
+            #if minVal equals maxVal
             if minVal == maxVal:
                 used[atIndex] = True
                 return 0, splitRules
