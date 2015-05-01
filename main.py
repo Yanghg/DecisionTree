@@ -2,7 +2,7 @@
 import csv
 from decisiontree import TreeNode
 
-#examples = [["aa","bb","cc"],[True,False,True],[1 2 3],[4 5 6]....[7 8 9]]
+#examples = [["aa","bb","cc"],[True,False,True],[False,True,False],[1 2 3],[4 5 6]....[7 8 9]]
 
 
 def handleAttribute(examples, name):
@@ -61,6 +61,7 @@ def readFile(fileName):
     						mapsW[j][examples[i+2][j]]=1
     					if mostcfW[j][0]<mapsW[j][examples[i+2][j]] :
 
+
 						if len(mostcfW[j])==1:
 							mostcfW[j].append(examples[i+2][j])
 						else:
@@ -91,8 +92,10 @@ def readFile(fileName):
 						if len(mostcfW[j])==1:
 							mostcfW[j].append(examples[i+2][j])
 						else:
+
     							mostcfW[j][0]=mapsW[j][examples[i+2][j]]
     							mostcfW[j][1]=examples[i+2][j]	
+
     				else:
     					if mapsL[j].has_key(examples[i+2][j])==True:
     						mapsL[j][examples[i+2][j]]+=1
@@ -103,8 +106,10 @@ def readFile(fileName):
 						if len(mostcfL[j])==1:
 							mostcfL[j].append(examples[i+2][j])
 						else:
+
     							mostcfL[j][0]=mapsL[j][examples[i+2][j]]
     							mostcfL[j][1]=examples[i+2][j]
+
 
     		else:
                 	if j==dlength-1:
@@ -127,9 +132,9 @@ def readFile(fileName):
     return examples
 
 def printTree(root):
-    return 
+    return
 
-def solve(fileName):
+def solve(fileName,percentage):
     examples = readFile(fileName)
     root = TreeNode(examples,None)
     return root
