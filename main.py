@@ -233,7 +233,7 @@ def generateXMLFile(root):
 
 
 def solve(fileName,gapNum):
-    examples = readFile(fileName)
+    examples = readFile(fileName, 0)
     root = TreeNode(examples,None,"",max((len(examples)-3)*0.001,1),gapNum)
     return root
 
