@@ -71,7 +71,7 @@ class TreeNode:
                 prob = float(len(splitSet[key])/numTotal)
                 conditionalEnt += prob * self.calculateEntropy(splitSet[key])
             #calculate information gain
-            infomationGain = classEntropy - conditionalEnt
+            informationGain = classEntropy - conditionalEnt
 
         #if numeric attribute
         elif attributesType[atIndex] == False:
@@ -122,7 +122,7 @@ class TreeNode:
                     if tempGain > informationGain:
                         informationGain = tempGain
                         splitRules = tempRules
-        return infomationGain, splitRules
+        return informationGain, splitRules
 
 
     def getSubExample(self, rule, examples):
@@ -153,7 +153,7 @@ class TreeNode:
         visitedList = examples[2]
         indexList = []
         for i in range(len(visitedList)):
-            if visitedList[i]:
+            if not visitedList[i]:
                 indexList.append(i)
         if len(indexList) == 0:
             self.setNameByResult(examples)
