@@ -3,9 +3,8 @@ import math
 class TreeNode:
     def __init__(self,examples,parent,minExampleNum=1):
         self.children = []
-        name, splitRules = self.bestAttribute(examples)
-        self.rules = splitRules
-        self.name = name
+        self.rules = []
+        self.name = ""
         self.parent = parent
 
         #set the minimum height of an example set
@@ -16,11 +15,12 @@ class TreeNode:
 
         #first check the examples using rule 1,2 and 3
         if self.examples1stCheck(examples):
-
-        for x in splitRules: 
-            subExamples = self.getSubExamples(x,examples)
-            child = TreeNode(subExamples)
-            self.children.append(child)
+            self.name, self.rules = self.bestAttribute(examples)
+            if self.name!="Good" or self.name!="Bad":
+                for rule in self.rules: 
+                    subExample = self.getSubExamples(rule,examples)
+                    child = TreeNode(subExample,this)
+                    self.children.append(child)
     
     def bestAttribute(self, examples):
         #information gain always larger than 0, set boundary to be 0
@@ -83,7 +83,7 @@ class TreeNode:
                 maxVal = max(current, maxVal)
 
             if minVal == maxVal:
-                setNameByResult(examples)
+                self.setNameByResult(examples)
                 return
 
             #partition and get gain
@@ -122,36 +122,29 @@ class TreeNode:
         return infomationGain, splitRules
 
 
-    def getSubExamples(self, examples):
+    def getSubExamples(self, rule, examples):
         subExampleSet = []
-        attributeIndex = examples[0].index(self.labelName)
-        for rule in self.rules:
-            sign = rule[0]
-            if sign == '=':
-                value = int(rule[1:])
-                subExample = []
-                subExample.append(examples[0])
-                subExample.append(examples[1])
-                subExample.append((examples[2])[:]) 
-                for dataRow in examples[3:]:
-                    if dataRow[attributeIndex] == value:
+        attributeIndex = examples[0].index(self.name)
+        subExample = []
+        subExample.append(examples[0])
+        subExample.append(examples[1])
+        subExample.append((examples[2])[:]) 
+        sign = rule[0]
+        if sign == '=':
+            value = int(rule[1:])
+            for dataRow in examples[3:]:
+                if dataRow[attributeIndex] == value:
+                    subExample.append(dataRow)
+        else:
+            value = float(rule[1:])
+            for dataRow in examples[3:]:
+                if sign == '>':
+                    if dataRow[attributeIndex] >= value:
                         subExample.append(dataRow)
-                subExampleSet.append(subExample)
-            else:
-                value = float(rule[1:])
-                subExample = []
-                subExample.append(examples[0])
-                subExample.append(examples[1])
-                subExample.append((examples[2])[:]) 
-                for dataRow in examples[3:]:
-                    if sign == '>':
-                        if dataRow[attributeIndex] >= value:
-                            subExample.append(dataRow)
-                    else:
-                        if dataRow[attributeIndex] < value:
-                            subExample.append(dataRow)
-                subExampleSet.append(subExample)
-        return subExampleSet
+                else:
+                    if dataRow[attributeIndex] < value:
+                        subExample.append(dataRow)
+        return subExample
 
     def examples1stCheck(self,examples):
         visitedList = examples[2]
