@@ -219,7 +219,7 @@ class TreeNode:
                 count.append(1)
                 node = self
                 while node.parent != None:
-                    temp += node.parent.name[1:] + node.parentRule
+                    temp += node.parent.name + node.parentRule
                     node = node.parent
                     if node.parent != None:
                         temp += " and "
