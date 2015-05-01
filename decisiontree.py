@@ -14,6 +14,7 @@ class TreeNode:
         else:
             self.minExampleNum = minExampleNum
 
+        #first check the examples using rule 1,2 and 3
         if self.examples1stCheck(examples):
 
         for x in splitRules: 
@@ -122,7 +123,35 @@ class TreeNode:
 
 
     def getSubExamples(self, examples):
-        return subExamples
+        subExampleSet = []
+        attributeIndex = examples[0].index(self.labelName)
+        for rule in self.rules:
+            sign = rule[0]
+            if sign == '=':
+                value = int(rule[1:])
+                subExample = []
+                subExample.append(examples[0])
+                subExample.append(examples[1])
+                subExample.append((examples[2])[:]) 
+                for dataRow in examples[3:]:
+                    if dataRow[attributeIndex] == value:
+                        subExample.append(dataRow)
+                subExampleSet.append(subExample)
+            else:
+                value = float(rule[1:])
+                subExample = []
+                subExample.append(examples[0])
+                subExample.append(examples[1])
+                subExample.append((examples[2])[:]) 
+                for dataRow in examples[3:]:
+                    if sign == '>':
+                        if dataRow[attributeIndex] >= value:
+                            subExample.append(dataRow)
+                    else:
+                        if dataRow[attributeIndex] < value:
+                            subExample.append(dataRow)
+                subExampleSet.append(subExample)
+        return subExampleSet
 
     def examples1stCheck(self,examples):
         visitedList = examples[2]
@@ -131,8 +160,10 @@ class TreeNode:
             if visitedList[i]:
                 indexList.append(i)
         if len(indexList) == 0:
+            self.setNameByResult()
             return False
         if len(examples) <= self.minExampleNum+3:
+            self.setNameByResult()
             return False
         width = len(examples[3])
         zeroNum = 0
@@ -141,16 +172,27 @@ class TreeNode:
             zeroNum += (1-examples[i][width-1])
             oneNum += examples[i][width-1]
         if zeroNum * oneNum == 0:
+            self.setNameByResult()
             return False
         return True 
+
+
+    def setNameByResult(self,examples):
+        oneNum = 0
+        width = len(examples[3])
+        for dataRow in examples[3:]:
+            oneNum += dataRow[width-1]
+        accuracy = float(oneNum)/(len(examples)-3)
+        if accuracy>0.5:
+            self.name = "Good"
+        elif: accuracy<0.5:
+            self.name = "Bad"
+        else:
+            self.name = random.choice(["Good","Bad"])
 
     def validate(self,examples,stat):
         if self.name=='Good':
             for 
-
-
-
-
 
 
     #helper functions for TreeNode class #consider 0
