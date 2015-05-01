@@ -17,8 +17,13 @@ def readFile(fileName):
     examples=[]
     Dis_Cons = []
     alignpos =[] 
+    serialpos=[]# continuous variable
     mostcfW= [] #Common num for win
     mostcfL= [] #Common num for win
+    ave4W= []
+    ave4L= []
+    mostSfW=[] #continous num average
+    mostSfL=[] #continous num average
     mapsW=[]#dict for win side
     mapsL=[]#dict for lose side
     delation=[]
@@ -29,6 +34,10 @@ def readFile(fileName):
         mapsW.append({})
         mostcfW.append([-1])
         mostcfL.append([-1])
+        ave4W.append([])
+        ave4L.append([])
+        mostSfW.append(0) 
+        mostSfL.append(0)
         if temp!= '?':
             if temp.find('.')!=-1:
                 Dis_Cons.append(False)
@@ -79,34 +88,42 @@ def readFile(fileName):
                 else:
                     examples[i+2].append(float(data[i][j]))
                     if data[i][dlength-1].find('1')!=-1:
-                        if mapsW[j].has_key(examples[i+2][j])==True:
-                            mapsW[j][examples[i+2][j]]+=1
-                        else:
-                            mapsW[j][examples[i+2][j]]=1
-                        if mostcfW[j][0]<mapsW[j][examples[i+2][j]] :
-                            if len(mostcfW[j])==1:
-                                mostcfW[j].append(examples[i+2][j])
-                            else:
-                                mostcfW[j][0]=mapsW[j][examples[i+2][j]]
-                                mostcfW[j][1]=examples[i+2][j]	
+                        ave4W[j].append(examples[i+2][j])
+                        mostSfW[j]=(mostSfW[j]*(len(ave4W[j])-1)+ave4W[j][-1])/len(ave4W[j])
+                        # if mapsW[j].has_key(examples[i+2][j])==True:
+                        #     mapsW[j][examples[i+2][j]]+=1
+                        # else:
+                        #     mapsW[j][examples[i+2][j]]=1
+                        # if mostcfW[j][0]<mapsW[j][examples[i+2][j]] :
+                        #     if len(mostcfW[j])==1:
+                        #         mostcfW[j].append(examples[i+2][j])
+                        #     else:
+                        #         mostcfW[j][0]=mapsW[j][examples[i+2][j]]
+                        #         mostcfW[j][1]=examples[i+2][j]	
                     else:
-                        if mapsL[j].has_key(examples[i+2][j])==True:
-                            mapsL[j][examples[i+2][j]]+=1
-                        else:
-                            mapsL[j][examples[i+2][j]]=1
-                        if mostcfL[j][0]<mapsL[j][examples[i+2][j]] :
+                        ave4L[j].append(examples[i+2][j])
+                        mostSfL[j]=(mostSfL[j]*(len(ave4L[j])-1)+ave4L[j][-1])/len(ave4L[j])
+                        # if mapsL[j].has_key(examples[i+2][j])==True:
+                        #     mapsL[j][examples[i+2][j]]+=1
+                        # else:
+                        #     mapsL[j][examples[i+2][j]]=1
+                        # if mostcfL[j][0]<mapsL[j][examples[i+2][j]] :
 
-                            if len(mostcfL[j])==1:
-                                mostcfL[j].append(examples[i+2][j])
-                            else:
-                                mostcfL[j][0]=mapsL[j][examples[i+2][j]]
-                                mostcfL[j][1]=examples[i+2][j]
+                        #     if len(mostcfL[j])==1:
+                        #         mostcfL[j].append(examples[i+2][j])
+                        #     else:
+                        #         mostcfL[j][0]=mapsL[j][examples[i+2][j]]
+                        #         mostcfL[j][1]=examples[i+2][j]
             else:
                 if j==dlength-1:
                     delation.append(i+2)
                 else:
-                    alignpos.append([i,j])
-                    examples[i+2].append(-50)
+                    if Dis_Cons[j]==True:
+                        alignpos.append([i,j])
+                        examples[i+2].append(-50)
+                    else:
+                        serialpos.append([i,j])
+                        examples[i+2].append(-50.0)
     # Switch ? to the most common data
     for cc in range(0,len(alignpos)):
         a=alignpos[cc][0]
@@ -115,6 +132,13 @@ def readFile(fileName):
             examples[a+2][b]=mostcfW[b][1]
         else:
             examples[a+2][b]=mostcfL[b][1]
+    for cc in range(0,len(serialpos)):
+        a=serialpos[cc][0]
+        b=serialpos[cc][1]
+        if data[a][dlength-1].find('1')!=-1:
+            examples[a+2][b]=mostSfW[b]
+        else:
+            examples[a+2][b]=mostSfL[b]
     counterz=0
     for i in range(0,len(delation)):
         del examples[delation[i]-counterz]
