@@ -18,7 +18,7 @@ class TreeNode:
             self.name, self.rules = self.bestAttribute(examples)
             if self.name!="Good" or self.name!="Bad":
                 for rule in self.rules: 
-                    subExample = self.getSubExamples(rule,examples)
+                    subExample = self.getSubExample(rule,examples)
                     child = TreeNode(subExample,this)
                     self.children.append(child)
     
@@ -50,7 +50,7 @@ class TreeNode:
         splitRules = []
         examplesData = examples[3:]
         numTotal = len(examplesData)
-        conditionalEnt = 0;
+        conditionalEnt = 0
 
         #if unused norminal attribute       
         if attributesType[atIndex] == True and used[atIndex] == False: 
@@ -120,7 +120,7 @@ class TreeNode:
         return infomationGain, splitRules
 
 
-    def getSubExamples(self, rule, examples):
+    def getSubExample(self, rule, examples):
         subExampleSet = []
         attributeIndex = examples[0].index(self.name)
         subExample = []
