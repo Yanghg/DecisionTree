@@ -1,6 +1,7 @@
 #-*- coding: UTF-8 -*-
 import csv
 from xml.etree import ElementTree
+import xml.dom.minidom
 from xml.etree.ElementTree import Element, SubElement, Comment
 import xml.etree.cElementTree as ET
 from decisiontree import TreeNode
@@ -217,14 +218,14 @@ def prettify(elem):
     reparsed = minidom.parseString(rough_string)
     return reparsed.toprettyxml(indent="\t")
 
-def generateXMLLoop(root):
+def generateXMLLoop(root,topTag):
     for child in root.children:
         childTag = SubElement(topTag, child.name)
-        generateXMLLoop(child)
+        generateXMLLoop(child,childTag)
 
 def generateXMLFile(root):
     rootTag = Element(root.name)
-    generateXMLLoop(root)
+    generateXMLLoop(root,rootTag)
     print prettify(rootTag)
     tree = ET.ElementTree(rootTag)
     tree.write("results.xml")
