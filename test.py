@@ -1,4 +1,4 @@
 execfile("decisiontree.py")
 execfile("main.py")
-root = solve("bvalidate.csv",10)
+root = solve("btrain.csv",10)
 #print validation("bvalidate.csv", root)
