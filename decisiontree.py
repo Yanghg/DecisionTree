@@ -32,8 +32,8 @@ class TreeNode:
 
         classEntropy = self.calculateEntropy(examples[3:])
         if classEntropy == 0:
-            # over
-
+            setNameByResult(examples)
+            return
 
         #get attribute with largest information gain
         for at in range(len(attributes)):
@@ -51,8 +51,9 @@ class TreeNode:
         splitRules = []
         examplesData = examples[3:]
         numTotal = len(examplesData)
-        #if unused norminal attribute
         conditionalEnt = 0;
+
+        #if unused norminal attribute       
         if attributesType[atIndex] == True and used[atIndex] == False: 
             used[atIndex] = True
             #build dictionary for different attribute value
@@ -71,8 +72,52 @@ class TreeNode:
 
         #if numeric attribute
         elif attributesType[atIndex] == False:
+            splitList = []
+            #get attribute value range
+            minVal = float("inf")
+            maxVal = float("-inf") 
+            for x in examplesData:
+                current = x[atIndex]
+                minVal = min(current, minVal)
+                maxVal = max(current, maxVal)
 
+            if minVal == maxVal:
+                setNameByResult(examples)
+                return
 
+            #partition and get gain
+            else:
+                partition = minVal
+                increment = (maxVal - minVal)/11.0
+                for i in range(10):
+                    partition += increment
+                    splitList.append(partition)
+                informationGain = 0
+
+                for splitPoint in splitList:
+                    tempSet = {}
+                    tempRules = []
+                    tempSet["belowPoint"] = []
+                    tempSet["abovePoint"] = []
+                    tempRules.append("<" + str(splitPoint))
+                    tempRules.append(">" + str(splitPoint))
+                    tempConditionalEnt = 0
+                    #build dictionary for different attribute value
+                    for x in examplesData:
+                        current = x[atIndex]
+                        if current < splitPoint:
+                            tempSet["belowPoint"].append(x)
+                        else:
+                            tempSet["abovePoint"].append(x)
+                    #calculate conditional entropy
+                    for key in tempSet: 
+                        prob = float(len(tempSet[key])/numTotal)
+                        tempConditionalEnt += prob * self.calculateEntropy(tempSet[key])
+                    #calculate information gain
+                    tempGain = classEntropy - tempConditionalEnt
+                    if tempGain > informationGain:
+                        informationGain = tempGain
+                        splitRules = tempRules
         return infomationGain, splitRules
 
 
