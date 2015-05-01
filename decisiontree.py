@@ -38,12 +38,11 @@ class TreeNode:
         for at in range(len(attributes)):
             if examples[2][at] != True:
                 gain, rule = self.handleAttribute(examples, at, classEntropy)
-                if gain == 0:
-                    return self.name, []
                 if gain > maxGain:
                     maxGain = gain
                     bestRule = rule
                     bestName = attributes[at]
+
         if maxGain <= 0:
             self.setNameByResult(examples)
             bestName = self.name 
@@ -87,7 +86,6 @@ class TreeNode:
                 maxVal = max(current, maxVal)
 
             if minVal == maxVal:
-                self.setNameByResult(examples)
                 used[atIndex] = True
                 return 0, splitRules
 
