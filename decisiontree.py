@@ -1,9 +1,9 @@
-import math
+import math,random
 
 class TreeNode:
     def __init__(self,examples,parent,minExampleNum=1):
         self.children = []
-        self.rules = []
+        self.rule = []
         self.name = ""
         self.parent = parent
 
@@ -15,11 +15,11 @@ class TreeNode:
 
         #first check the examples using rule 1,2 and 3
         if self.examples1stCheck(examples):
-            self.name, self.rules = self.bestAttribute(examples)
+            self.name, self.rule = self.bestAttribute(examples)
             if self.name!="Good" or self.name!="Bad":
-                for rule in self.rules: 
+                for rule in self.rule: 
                     subExample = self.getSubExample(rule,examples)
-                    child = TreeNode(subExample,this)
+                    child = TreeNode(subExample,self)
                     self.children.append(child)
     
     def bestAttribute(self, examples):
@@ -200,8 +200,8 @@ class TreeNode:
             stat.append(count)
         else:
             for i in range(0,len(self.rule)):
-                sub=getSubExample(self.rule[i],examples)
-                self.child[i].validate(sub,stat)
+                sub=self.getSubExample(self.rule[i],examples)
+                self.children[i].validate(sub,stat)
 
 
 
