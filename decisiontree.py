@@ -196,7 +196,7 @@ class TreeNode:
 
 
     #helper functions for TreeNode class #consider 0
-    def calculateEntropy(dataSet):
+    def calculateEntropy(self, dataSet):
         num = len(dataSet)
         freq={}
         entropy = 0.0
