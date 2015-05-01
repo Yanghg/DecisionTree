@@ -1,11 +1,9 @@
 import math,random
 
 class TreeNode:
-<<<<<<< Updated upstream
-    def __init__(self,examples,parent,minExampleNum=1,gapNum=1):
-=======
+
     def __init__(self,examples,parent,parentRule,minExampleNum=1,gapNum=1):
->>>>>>> Stashed changes
+
         self.children = []
         self.rule = []
         self.name = ""
