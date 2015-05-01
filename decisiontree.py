@@ -14,6 +14,7 @@ class TreeNode:
         else:
             self.minExampleNum = minExampleNum
 
+        #first check the examples using rule 1,2 and 3
         if self.examples1stCheck(examples):
 
         for x in splitRules: 
@@ -77,7 +78,35 @@ class TreeNode:
 
 
     def getSubExamples(self, examples):
-        return subExamples
+        subExampleSet = []
+        attributeIndex = examples[0].index(self.labelName)
+        for rule in self.rules:
+            sign = rule[0]
+            if sign == '=':
+                value = int(rule[1:])
+                subExample = []
+                subExample.append(examples[0])
+                subExample.append(examples[1])
+                subExample.append((examples[2])[:]) 
+                for dataRow in examples[3:]:
+                    if dataRow[attributeIndex] == value:
+                        subExample.append(dataRow)
+                subExampleSet.append(subExample)
+            else:
+                value = float(rule[1:])
+                subExample = []
+                subExample.append(examples[0])
+                subExample.append(examples[1])
+                subExample.append((examples[2])[:]) 
+                for dataRow in examples[3:]:
+                    if sign == '>':
+                        if dataRow[attributeIndex] >= value:
+                            subExample.append(dataRow)
+                    else:
+                        if dataRow[attributeIndex] < value:
+                            subExample.append(dataRow)
+                subExampleSet.append(subExample)
+        return subExampleSet
 
     def examples1stCheck(self,examples):
         visitedList = examples[2]
