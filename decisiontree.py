@@ -34,7 +34,6 @@ class TreeNode:
     
         #get attribute with largest information gain
         for at in range(len(attributes)):
-                maxGain = gain
             if examples[2][at] != True:
                 gain, rule = self.handleAttribute(examples, at, classEntropy)
                 if gain == -10:
