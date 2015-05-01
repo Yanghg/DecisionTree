@@ -5,7 +5,7 @@ class TreeNode:
         self.children = []
         name, splitRules = self.bestAttribute(examples)
         self.rules = splitRules
-        self.labelName = name
+        self.name = name
         self.parent = parent
 
         #set the minimum height of an example set
@@ -98,6 +98,14 @@ class TreeNode:
         if zeroNum * oneNum == 0:
             return False
         return True 
+
+    def validate(self,examples,stat):
+        if self.name=='Good':
+            for 
+
+
+
+
 
 
     #helper functions for TreeNode class #consider 0

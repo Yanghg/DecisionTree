@@ -138,3 +138,13 @@ def solve(fileName,percentage):
     examples = readFile(fileName)
     root = TreeNode(examples,None)
     return root
+
+def validation(fileName,root):
+    testdata= readFile(fileName)
+    stat=[]
+    missum=0#total wrong.
+    root.validate(testdata,stat)
+    for i in range(0,len(stat)):
+        missum+=stat[i]
+    accuracy=float(missum)/float(len(testdata)-3)
+    return accuracy
