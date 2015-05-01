@@ -5,7 +5,7 @@ class TreeNode:
         self.children = []
         name, splitRules = self.bestAttribute(examples)
         self.rules = splitRules
-        self.labelName = name
+        self.name = name
         self.parent = parent
 
         #set the minimum height of an example set
@@ -115,8 +115,10 @@ class TreeNode:
             if visitedList[i]:
                 indexList.append(i)
         if len(indexList) == 0:
+            self.setNameByResult()
             return False
         if len(examples) <= self.minExampleNum+3:
+            self.setNameByResult()
             return False
         width = len(examples[3])
         zeroNum = 0
@@ -125,8 +127,22 @@ class TreeNode:
             zeroNum += (1-examples[i][width-1])
             oneNum += examples[i][width-1]
         if zeroNum * oneNum == 0:
+            self.setNameByResult()
             return False
         return True 
+
+    def setNameByResult(self,examples):
+        oneNum = 0
+        width = len(examples[3])
+        for dataRow in examples[3:]:
+            oneNum += dataRow[width-1]
+        accuracy = float(oneNum)/(len(examples)-3)
+        if accuracy>0.5:
+            self.name = "Good"
+        elif: accuracy<0.5:
+            self.name = "Bad"
+        else:
+            self.name = random.choice(["Good","Bad"])
 
 
     #helper functions for TreeNode class #consider 0
