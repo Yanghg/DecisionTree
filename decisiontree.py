@@ -42,6 +42,9 @@ class TreeNode:
                     maxGain = gain
                     bestRule = rule
                     bestName = attributes[at]
+        if maxGain == 0:
+            self.setNameByResult(examples)
+            bestName = self.name 
         return bestName, bestRule
 
     def handleAttribute(self, examples, atIndex, classEntropy):
@@ -55,14 +58,14 @@ class TreeNode:
 
         #if unused norminal attribute       
         if attributesType[atIndex] == True: 
-            examples[2][atIndex] = True
+            used[atIndex] = True
             #build dictionary for different attribute value
             for x in examplesData:
-                    current = x[atIndex]
-                    if not splitSet.has_key(current):
-                        splitSet[current] = []
-                        splitRules.append("=" + str(current))
-                    splitSet[current].append(x)
+                current = x[atIndex]
+                if not splitSet.has_key(current):
+                    splitSet[current] = []
+                    splitRules.append("=" + str(current))
+                splitSet[current].append(x)
             #calculate conditional entropy
             for key in splitSet: 
                 prob = float(len(splitSet[key])/numTotal)
@@ -83,6 +86,7 @@ class TreeNode:
 
             if minVal == maxVal:
                 self.setNameByResult(examples)
+                used[atIndex] = True
                 return -10, splitRules
 
             #partition and get gain
@@ -189,7 +193,7 @@ class TreeNode:
                 if examples[i+3][-1]!=1:
                     count+=1
             stat.append(count)
-        elif self.name=='bad':
+        elif self.name=='Bad':
             for i in range(0,len(examples)-3):
                 if examples[i+3][-1]!=0:
                     count+=1
