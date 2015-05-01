@@ -1,11 +1,16 @@
 import math,random
 
 class TreeNode:
+<<<<<<< Updated upstream
     def __init__(self,examples,parent,minExampleNum=1,gapNum=1):
+=======
+    def __init__(self,examples,parent,parentRule,minExampleNum=1,gapNum=1):
+>>>>>>> Stashed changes
         self.children = []
         self.rule = []
         self.name = ""
         self.parent = parent
+        self.parentRule = parentRule
 
         #set the minimum height of an example set
         if parent:
@@ -21,7 +26,7 @@ class TreeNode:
             if self.name!="Good" or self.name!="Bad":
                 for rule in self.rule: 
                     subExample = self.getSubExample(rule,examples)
-                    child = TreeNode(subExample,self)
+                    child = TreeNode(subExample,self,rule)
                     self.children.append(child)
     
     def bestAttribute(self, examples):
@@ -204,11 +209,33 @@ class TreeNode:
                 sub=self.getSubExample(self.rule[i],examples)
                 self.children[i].validate(sub,stat)
 
+    def getDNF(self, count):
+        
+        if self.name == "Good" and self.parent == None:
+            return "1"
+        elif self.name == "Bad" and self.parent == None:
+            return "0"
+        elif self.name == "Good":
+            temp = ""
+            if len(count) < 16:
+                count.append(1)
+                node = self
+                while node.parent != None:
+                    temp += node.parent.name[1:] + node.parentRule
+                    node = node.parent
+                    if node.parent != None:
+                        temp += " and "
+                temp = "(" + temp + ")" + " or "
+            return temp
+        elif self.name == "Bad":
+            return ""
+        else:
+            temp = ""
+            for child in self.children:
+                temp += child.getDNF(count)
+            return temp
 
-
-
-
-    #helper functions for TreeNode class #consider 0
+    #helper functions for TreeNode class 
     def calculateEntropy(self, dataSet):
         num = len(dataSet)
         freq={}

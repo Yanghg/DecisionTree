@@ -234,12 +234,12 @@ def generateXMLFile(root):
 
 def solve(fileName,gapNum):
     examples = readFile(fileName)
-    root = TreeNode(examples,None,max((len(examples)-3)*0.001,1),gapNum)
+    root = TreeNode(examples,None,"",max((len(examples)-3)*0.001,1),gapNum)
     return root
 
 def validation(fileName,root):
-    testdata= readFile(fileName)
-    stat=[]
+    testdata = readFile(fileName)
+    stat =[]
     missum=0#total wrong.
     root.validate(testdata,stat)
     for i in range(0,len(stat)):
@@ -248,3 +248,11 @@ def validation(fileName,root):
     accuracy=float(missum)/float(len(testdata)-3)
     accuracy=1-accuracy
     return accuracy
+
+def printDNF(root):
+    count = []
+    res = root.getDNF(count)
+    if res[-4:] == " or ":
+        res = res[:-4]
+    return res
+
