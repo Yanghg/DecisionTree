@@ -131,6 +131,7 @@ class TreeNode:
             return False
         return True 
 
+<<<<<<< HEAD
     def setNameByResult(self,examples):
         oneNum = 0
         width = len(examples[3])
@@ -143,6 +144,15 @@ class TreeNode:
             self.name = "Bad"
         else:
             self.name = random.choice(["Good","Bad"])
+=======
+    def validate(self,examples,stat):
+        if self.name=='Good':
+            for 
+
+
+
+
+>>>>>>> master
 
 
     #helper functions for TreeNode class #consider 0
