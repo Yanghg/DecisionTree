@@ -240,7 +240,7 @@ def validation(fileName,root):
 
 def generateTest(fileName, root):
     examples = readFile(fileName, 1, 1)
-    print len(examples)
+    #print len(examples)
     for dataIndex in range(3, len(examples)):
         outcome = root.generateOutcome(examples[dataIndex], examples)
         examples[dataIndex].append(outcome)
