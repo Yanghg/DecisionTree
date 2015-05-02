@@ -219,11 +219,17 @@ def output(examples):
     for item in examples:
         writer.writerow(item)
 
+<<<<<<< HEAD
 #This function create a decision tree from a training set "fileName", 
 #gapNum is a parameter for selecting continuous attributes  
 #portion is used to decide how much of the training set we use
 def solve(fileName,gapNum = 10,portion = 1):
     examples = readFile(fileName, 0,portion) 
+=======
+
+def solve(fileName,gapNum,portion):
+    examples = readFile(fileName, 0, portion) 
+>>>>>>> origin/master
     root = TreeNode(examples,None,"",max((len(examples)-3)*0.001,1),gapNum)
     return root
 
@@ -243,13 +249,14 @@ def validation(fileName,root):
 
 
 def generateTest(fileName, root):
-    examples = readFile(fileName, 1)
+    examples = readFile(fileName, 1, 1)
+    print len(examples)
     for dataIndex in range(3, len(examples)):
         outcome = root.generateOutcome(examples[dataIndex], examples)
         examples[dataIndex].append(outcome)
-    del examples[1]
-    del examples[1]
-    return examples
+    #del examples[1]
+    #del examples[1]
+    output(examples)
 
 #This function will prune the tree 'root'
 def pruningAll(fileName,root):
