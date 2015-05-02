@@ -13,10 +13,7 @@ TRAIN = 0
 PRUNING = 1
 TEST = 2
 
-
-def handleAttribute(examples, name):
-    return gain, rule
-
+#This function is to read data set from file
 def readFile(fileName,type,portion):  #portions means how much we want to devide the set. type zero means training set or validation set. type one means testing set.
     # "rb" is read only
     csvReader = csv.reader(open(fileName,"rb"),delimiter=',') 
@@ -189,8 +186,7 @@ def readFile(fileName,type,portion):  #portions means how much we want to devide
     return examples
 
 def prettify(elem):
-    """Return a pretty-printed XML string for the Element.
-    """
+    #Return a pretty-printed XML string for the Element.
     rough_string = ElementTree.tostring(elem, 'utf-8')
     reparsed = minidom.parseString(rough_string)
     return reparsed.toprettyxml(indent="  ")
@@ -207,6 +203,8 @@ def generateXMLLoop(root,topTag):
         childTag.text = root.name + " " + syntax + " " + child.parentRule[1:] + " " + str(child.imprValue)
         generateXMLLoop(child,childTag)
 
+#This function is to print the tree out in console window
+#A corresponding XML file is also generated as "results.xml"
 def generateXMLFile(root):
     rootTag = Element(root.name)
     generateXMLLoop(root,rootTag)
@@ -221,12 +219,16 @@ def output(examples):
     for item in examples:
         writer.writerow(item)
 
-
-def solve(fileName,gapNum,portion):
+#This function create a decision tree from a training set "fileName", 
+#gapNum is a parameter for selecting continuous attributes  
+#portion is used to decide how much of the training set we use
+def solve(fileName,gapNum = 10,portion = 1):
     examples = readFile(fileName, 0,portion) 
     root = TreeNode(examples,None,"",max((len(examples)-3)*0.001,1),gapNum)
     return root
 
+
+#This function returns the accuracy of decision tree 'root' on a certain validation file 'fileName'
 def validation(fileName,root):
     testdata = readFile(fileName, 0,1) #do not forget to add portion as 1.
     stat =[]
@@ -249,6 +251,7 @@ def generateTest(fileName, root):
     del examples[1]
     return examples
 
+#This function will prune the tree 'root'
 def pruningAll(fileName,root):
     validation(fileName,root)
     root.calcImprGloValue()
@@ -272,6 +275,8 @@ def pruning(root):
             return sum
     return 0
 
+
+#This function returns the node (including leaf) number of a tree
 def calcNodeNum(root):
     sum = 1
     for child in root.children:
