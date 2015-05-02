@@ -218,7 +218,6 @@ def generateXMLFile(root):
 def solve(fileName,gapNum,portion):
     examples = readFile(fileName, 0,portion) 
     root = TreeNode(examples,None,"",max((len(examples)-3)*0.001,1),gapNum)
-    root.calcImprGloValue()
     return root
 
 def validation(fileName,root):
@@ -228,21 +227,35 @@ def validation(fileName,root):
     root.validate(testdata,stat)
     for i in range(0,len(stat)):
         missum+=stat[i]
-    print len(stat)
+    #print len(stat)
     accuracy=float(missum)/float(len(testdata)-3)
     accuracy=1-accuracy
     return accuracy
 
+def pruningAll(fileName,root):
+    validation(fileName,root)
+    root.calcImprGloValue()
+    pruning(root)
+
 def pruning(root):
-    if root.imprValue == root.imprGloValue and root.imprValue > 0:
+    if (root.imprValue > 0) and (root.imprValue >= root.imprGloValue):
         root.children = []
+        root.rule = []
+        if root.name != "Good" and root.name != "Bad":
+            print "haha"
         if root.isGood:
             root.name = "Good"
         else:
             root.name = "Bad"
     else:
         for child in root.children:
-            pruning(child)        
+            pruning(child)  
+
+def calcNodeNum(root):
+    sum = 1
+    for child in root.children:
+        sum += calcNodeNum(child)
+    return sum
 
 
 def printDNF(root):

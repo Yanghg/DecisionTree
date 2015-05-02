@@ -29,7 +29,7 @@ class TreeNode:
                     subExample = self.getSubExample(rule,examples)
                     child = TreeNode(subExample,self,rule)
                     self.children.append(child)
-                self.calcImprValue(examples)
+                
     
     def bestAttribute(self, examples):
         #information gain always larger than 0, set boundary to be 0
@@ -196,6 +196,7 @@ class TreeNode:
 
     def validate(self,examples,stat):
         count=0
+        validateWrong = 0
         if self.name=='Good':
             for i in range(0,len(examples)-3):
                 if examples[i+3][-1]!=1:
@@ -210,6 +211,9 @@ class TreeNode:
             for i in range(0,len(self.rule)):
                 sub=self.getSubExample(self.rule[i],examples)
                 self.children[i].validate(sub,stat)
+        for num in stat:
+            validateWrong += num
+        self.calcImprValue(examples,validateWrong)
         
 
     def getDNF(self, count):
@@ -257,11 +261,10 @@ class TreeNode:
                 entropy -= prob*math.log(prob,2)
         return entropy
 
-    def calcImprValue(self,examples):
-        validateWrong = 0
+    def calcImprValue(self,examples,validateWrong):
         oneNum = 0
         zeroNum = 0
-        stat = []
+
         for dataRow in examples[3:]:
             if dataRow[-1] == 1:
                 oneNum += 1
@@ -269,9 +272,6 @@ class TreeNode:
                 zeroNum += 1
         if oneNum < zeroNum:
             self.isGood = False
-        self.validate(examples,stat)
-        for num in stat:
-            validateWrong += num
         self.imprValue = validateWrong - min(oneNum,zeroNum) 
 
     def calcImprGloValue(self):
