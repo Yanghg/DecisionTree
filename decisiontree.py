@@ -9,6 +9,9 @@ class TreeNode:
         self.name = ""
         self.parent = parent
         self.parentRule = parentRule
+        self.imprValue = 0
+        self.imprGloValue = 0
+        self.isGood = True
 
         #set the minimum height of an example set
         if parent:
@@ -26,6 +29,7 @@ class TreeNode:
                     subExample = self.getSubExample(rule,examples)
                     child = TreeNode(subExample,self,rule)
                     self.children.append(child)
+                
     
     def bestAttribute(self, examples):
         #information gain always larger than 0, set boundary to be 0
@@ -192,6 +196,7 @@ class TreeNode:
 
     def validate(self,examples,stat):
         count=0
+        validateWrong = 0
         if self.name=='Good':
             for i in range(0,len(examples)-3):
                 if examples[i+3][-1]!=1:
@@ -206,6 +211,10 @@ class TreeNode:
             for i in range(0,len(self.rule)):
                 sub=self.getSubExample(self.rule[i],examples)
                 self.children[i].validate(sub,stat)
+        for num in stat:
+            validateWrong += num
+        self.calcImprValue(examples,validateWrong)
+        
 
     def generateOutcome(self,exampleData,examples):
         
@@ -269,6 +278,33 @@ class TreeNode:
             if prob != 0:                   
                 entropy -= prob*math.log(prob,2)
         return entropy
+
+    def calcImprValue(self,examples,validateWrong):
+        oneNum = 0
+        zeroNum = 0
+
+        for dataRow in examples[3:]:
+            if dataRow[-1] == 1:
+                oneNum += 1
+            else:
+                zeroNum += 1
+        if oneNum < zeroNum:
+            self.isGood = False
+        self.imprValue = validateWrong - min(oneNum,zeroNum) 
+
+    def calcImprGloValue(self):
+        noChild = True    
+        sum = 0
+        for child in self.children:
+            if child.name != "Good" or child.name != "Bad":
+                noChild = False
+                sum += child.calcImprGloValue()
+        if noChild:
+            self.imprGloValue = self.imprValue
+        else:
+            self.imprGloValue = max(self.imprValue,sum)
+        return self.imprGloValue
+
 
 
 

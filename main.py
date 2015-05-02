@@ -1,4 +1,5 @@
 #-*- coding: UTF-8 -*-
+import sys
 import csv
 from xml.etree import ElementTree
 from xml.dom import minidom
@@ -16,12 +17,14 @@ TEST = 2
 def handleAttribute(examples, name):
     return gain, rule
 
-def readFile(fileName,type):
+def readFile(fileName,type,portion):  #portions means how much we want to devide the set. type zero means training set or validation set. type one means testing set.
     # "rb" is read only
     csvReader = csv.reader(open(fileName,"rb"),delimiter=',') 
     data = list(csvReader)
     tlength=len(data)
     dlength= len(data[0])
+    plength= tlength/portion
+    data = data[:tlength]
     examples=[]
     if type==0:
         Dis_Cons = []
@@ -70,7 +73,7 @@ def readFile(fileName,type):
         for i in range(0,dlength-1):
             examples[2].append(False)
         # Turn str to int or float
-        for i in range(1,tlength):
+        for i in range(1,plength):
             examples.append([])
             for j in range(0,dlength):
                 if data[i][j]!='?':
@@ -165,7 +168,7 @@ def readFile(fileName,type):
         examples.append([])
         for i in range(0,dlength-1):
             examples[2].append(False)
-        for i in range(1,tlength):
+        for i in range(1,plength):
             examples.append([])
             for j in range(0,dlength-1):
                 if data[i][j]!='?':
@@ -183,9 +186,6 @@ def readFile(fileName,type):
             counterz+=1
         if len(examples[-1])==0:
             del examples[-1]
-
-
-
     return examples
 
 def prettify(elem):
@@ -198,7 +198,13 @@ def prettify(elem):
 def generateXMLLoop(root,topTag):
     for child in root.children:
         childTag = SubElement(topTag, child.name)
-        childTag.text = "0"
+        if child.parentRule[0] == "=":
+            syntax = "equal"
+        elif child.parentRule[0] == ">":
+            syntax = "above"
+        else: 
+            syntax = "below"
+        childTag.text = root.name + " " + syntax + " " + child.parentRule[1:] + " " + str(child.imprValue)
         generateXMLLoop(child,childTag)
 
 def generateXMLFile(root):
@@ -208,25 +214,31 @@ def generateXMLFile(root):
     tree = ET.ElementTree(rootTag)
     tree.write("results.xml")
 
+def output(examples):
+    csvfile = open('labeled.csv', 'w')
+    writer = csv.writer(csvfile,delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL)
+    #writer = csv.writer(sys.stdout)
+    for item in examples:
+        writer.writerow(item)
 
 
-
-def solve(fileName,gapNum):
-    examples = readFile(fileName, 0)
+def solve(fileName,gapNum,portion):
+    examples = readFile(fileName, 0,portion) 
     root = TreeNode(examples,None,"",max((len(examples)-3)*0.001,1),gapNum)
     return root
 
 def validation(fileName,root):
-    testdata = readFile(fileName, 0)
+    testdata = readFile(fileName, 0,1) #do not forget to add portion as 1.
     stat =[]
     missum=0#total wrong.
     root.validate(testdata,stat)
     for i in range(0,len(stat)):
         missum+=stat[i]
-    print len(stat)
+    #print len(stat)
     accuracy=float(missum)/float(len(testdata)-3)
     accuracy=1-accuracy
     return accuracy
+
 
 def generateTest(fileName, root):
     examples = readFile(fileName, 1)
@@ -236,6 +248,32 @@ def generateTest(fileName, root):
     del examples[1]
     del examples[1]
     return examples
+
+def pruningAll(fileName,root):
+    validation(fileName,root)
+    root.calcImprGloValue()
+    pruning(root)
+
+def pruning(root):
+    if (root.imprValue > 0) and (root.imprValue >= root.imprGloValue):
+        root.children = []
+        root.rule = []
+        if root.name != "Good" and root.name != "Bad":
+            print "haha"
+        if root.isGood:
+            root.name = "Good"
+        else:
+            root.name = "Bad"
+    else:
+        for child in root.children:
+            pruning(child)  
+
+def calcNodeNum(root):
+    sum = 1
+    for child in root.children:
+        sum += calcNodeNum(child)
+    return sum
+
 
 def printDNF(root):
     count = []
