@@ -18,7 +18,7 @@ def readFile(fileName,type,portion):  #portions means how much we want to devide
     data = list(csvReader)
     tlength=len(data)
     dlength= len(data[0])
-    plength= tlength/portion
+    plength= int(tlength*portion)
     data = data[:tlength]
     examples=[]
     if type==0:
@@ -238,18 +238,18 @@ def pruningAll(fileName,root):
     pruning(root)
 
 def pruning(root):
-    if (root.imprValue > 0) and (root.imprValue >= root.imprGloValue):
-        root.children = []
-        root.rule = []
-        if root.name != "Good" and root.name != "Bad":
-            print "haha"
-        if root.isGood:
-            root.name = "Good"
+    if root.name != "Good" and root.name != "Bad":
+        if (root.imprValue > 0) and (root.imprValue >= root.imprGloValue):
+            root.children = []
+            root.rule = []
+            print "a node is pruned"
+            if root.isGood:
+                root.name = "Good"
+            else:
+                root.name = "Bad"
         else:
-            root.name = "Bad"
-    else:
-        for child in root.children:
-            pruning(child)  
+            for child in root.children:
+                pruning(child)  
 
 def calcNodeNum(root):
     sum = 1

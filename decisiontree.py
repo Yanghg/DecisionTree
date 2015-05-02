@@ -24,7 +24,7 @@ class TreeNode:
         #first check the examples using rule 1,2 and 3
         if self.examples1stCheck(examples):
             self.name, self.rule = self.bestAttribute(examples)
-            if self.name!="Good" or self.name!="Bad":
+            if self.name!="Good" and self.name!="Bad":
                 for rule in self.rule: 
                     subExample = self.getSubExample(rule,examples)
                     child = TreeNode(subExample,self,rule)
@@ -278,7 +278,7 @@ class TreeNode:
         noChild = True    
         sum = 0
         for child in self.children:
-            if child.name != "Good" or child.name != "Bad":
+            if child.name != "Good" and child.name != "Bad":
                 noChild = False
                 sum += child.calcImprGloValue()
         if noChild:
