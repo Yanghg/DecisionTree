@@ -8,6 +8,10 @@ from decisiontree import TreeNode
 
 #examples = [["aa","bb","cc"],[True,False,True],[False,True,False],[1 2 3],[4 5 6]....[7 8 9]]
 
+TRAIN = 0
+PRUNING = 1
+TEST = 2
+
 
 def handleAttribute(examples, name):
     return gain, rule
@@ -223,6 +227,15 @@ def validation(fileName,root):
     accuracy=float(missum)/float(len(testdata)-3)
     accuracy=1-accuracy
     return accuracy
+
+def generateTest(fileName, root):
+    examples = readFile(fileName, 1)
+    for dataIndex in range(3, len(examples)):
+        outcome = root.generateOutcome(examples[dataIndex], examples)
+        examples[dataIndex].append(outcome)
+    del examples[1]
+    del examples[1]
+    return examples
 
 def printDNF(root):
     count = []
