@@ -244,8 +244,8 @@ def generateTest(fileName, root):
     for dataIndex in range(3, len(examples)):
         outcome = root.generateOutcome(examples[dataIndex], examples)
         examples[dataIndex].append(outcome)
-    #del examples[1]
-    #del examples[1]
+    del examples[1]
+    del examples[1]
     output(examples)
 
 #This function will prune the tree 'root'

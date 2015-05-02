@@ -9,11 +9,12 @@ for i in range(1,11):
 '''
 
 
-root = solve("bvalidate.csv",10,1)
-generateTest("btest.csv", root)
+root = solve("btrain.csv",10,1)
+pruningAll("bvalidate.csv",root)
+#generateTest("btest.csv", root)
 
 
 #print validation("bvalidate.csv", root)
-#print printDNF(root)
+print printDNF(root)
 
 
