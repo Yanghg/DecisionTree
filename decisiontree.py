@@ -224,15 +224,16 @@ class TreeNode:
             return 'Bad'
         else:
             index = examples[0].index(self.name)
+            #print examples[0][index]
             for child in self.children:
                 if examples[1][index] == True:
-                    if self.child.parentRule[1:] == str(exampleData[index]):
-                        self.child.generateOutcome(exampleData,examples)
+                    if child.parentRule[1:] == str(exampleData[index]):
+                        return child.generateOutcome(exampleData,examples)
                 elif examples[1][index] == False:
-                    if self.child.parentRule[0] == "<" and exampleData[index] < float(self.child.parentRule[1:]):
-                        self.child.generateOutcome(exampleData,examples)
-                    elif self.child.parentRule[0] == ">" and exampleData[index] >= float(self.child.parentRule[1:]):
-                        self.child.generateOutcome(exampleData,examples)                
+                    if child.parentRule[0] == "<" and exampleData[index] < float(child.parentRule[1:]):
+                        return child.generateOutcome(exampleData,examples)
+                    elif child.parentRule[0] == ">" and exampleData[index] >= float(child.parentRule[1:]):
+                        return child.generateOutcome(exampleData,examples)                
 
     def getDNF(self, count):
         

@@ -223,7 +223,7 @@ def output(examples):
 
 
 def solve(fileName,gapNum,portion):
-    examples = readFile(fileName, 0,portion) 
+    examples = readFile(fileName, 0, portion) 
     root = TreeNode(examples,None,"",max((len(examples)-3)*0.001,1),gapNum)
     return root
 
@@ -241,13 +241,14 @@ def validation(fileName,root):
 
 
 def generateTest(fileName, root):
-    examples = readFile(fileName, 1)
+    examples = readFile(fileName, 1, 1)
+    print len(examples)
     for dataIndex in range(3, len(examples)):
         outcome = root.generateOutcome(examples[dataIndex], examples)
         examples[dataIndex].append(outcome)
-    del examples[1]
-    del examples[1]
-    return examples
+    #del examples[1]
+    #del examples[1]
+    output(examples)
 
 def pruningAll(fileName,root):
     validation(fileName,root)

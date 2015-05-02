@@ -9,7 +9,8 @@ for i in range(1,11):
 '''
 
 
-root = solve("btrain.csv",10,1)
+root = solve("bvalidate.csv",10,1)
+generateTest("btest.csv", root)
 
 
 #print validation("bvalidate.csv", root)
