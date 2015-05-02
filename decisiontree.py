@@ -9,6 +9,9 @@ class TreeNode:
         self.name = ""
         self.parent = parent
         self.parentRule = parentRule
+        self.imprValue = 0
+        self.imprGloValue = 0
+        self.isGood = True
 
         #set the minimum height of an example set
         if parent:
@@ -26,6 +29,7 @@ class TreeNode:
                     subExample = self.getSubExample(rule,examples)
                     child = TreeNode(subExample,self,rule)
                     self.children.append(child)
+                self.calcImprValue(examples)
     
     def bestAttribute(self, examples):
         #information gain always larger than 0, set boundary to be 0
@@ -206,6 +210,7 @@ class TreeNode:
             for i in range(0,len(self.rule)):
                 sub=self.getSubExample(self.rule[i],examples)
                 self.children[i].validate(sub,stat)
+        
 
     def getDNF(self, count):
         
@@ -251,6 +256,37 @@ class TreeNode:
             if prob != 0:                   
                 entropy -= prob*math.log(prob,2)
         return entropy
+
+    def calcImprValue(self,examples):
+        validateWrong = 0
+        oneNum = 0
+        zeroNum = 0
+        stat = []
+        for dataRow in examples[3:]:
+            if dataRow[-1] == 1:
+                oneNum += 1
+            else:
+                zeroNum += 1
+        if oneNum < zeroNum:
+            self.isGood = False
+        self.validate(examples,stat)
+        for num in stat:
+            validateWrong += num
+        self.imprValue = validateWrong - min(oneNum,zeroNum) 
+
+    def calcImprGloValue(self):
+        noChild = True    
+        sum = 0
+        for child in self.children:
+            if child.name != "Good" or child.name != "Bad":
+                noChild = False
+                sum += child.calcImprGloValue()
+        if noChild:
+            self.imprGloValue = self.imprValue
+        else:
+            self.imprGloValue = max(self.imprValue,sum)
+        return self.imprGloValue
+
 
 
 

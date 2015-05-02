@@ -197,11 +197,12 @@ def generateXMLLoop(root,topTag):
     for child in root.children:
         childTag = SubElement(topTag, child.name)
         if child.parentRule[0] == "=":
-            childTag.text = root.name + " equal "+child.parentRule[1:]
+            syntax = "equal"
         elif child.parentRule[0] == ">":
-            childTag.text = root.name + " above "+child.parentRule[1:]
+            syntax = "above"
         else: 
-            childTag.text = root.name + " below "+child.parentRule[1:]
+            syntax = "below"
+        childTag.text = root.name + " " + syntax + " " + child.parentRule[1:] + " " + str(child.imprValue)
         generateXMLLoop(child,childTag)
 
 def generateXMLFile(root):
@@ -217,6 +218,7 @@ def generateXMLFile(root):
 def solve(fileName,gapNum,portion):
     examples = readFile(fileName, 0,portion) 
     root = TreeNode(examples,None,"",max((len(examples)-3)*0.001,1),gapNum)
+    root.calcImprGloValue()
     return root
 
 def validation(fileName,root):
@@ -230,6 +232,18 @@ def validation(fileName,root):
     accuracy=float(missum)/float(len(testdata)-3)
     accuracy=1-accuracy
     return accuracy
+
+def pruning(root):
+    if root.imprValue == root.imprGloValue and root.imprValue > 0:
+        root.children = []
+        if root.isGood:
+            root.name = "Good"
+        else:
+            root.name = "Bad"
+    else:
+        for child in root.children:
+            pruning(child)        
+
 
 def printDNF(root):
     count = []
