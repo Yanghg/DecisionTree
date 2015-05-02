@@ -9,10 +9,6 @@ from decisiontree import TreeNode
 
 #examples = [["aa","bb","cc"],[True,False,True],[False,True,False],[1 2 3],[4 5 6]....[7 8 9]]
 
-TRAIN = 0
-PRUNING = 1
-TEST = 2
-
 #This function is to read data set from file
 def readFile(fileName,type,portion):  #portions means how much we want to devide the set. type zero means training set or validation set. type one means testing set.
     # "rb" is read only
