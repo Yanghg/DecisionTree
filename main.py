@@ -12,12 +12,14 @@ from decisiontree import TreeNode
 def handleAttribute(examples, name):
     return gain, rule
 
-def readFile(fileName,type):
+def readFile(fileName,type,portion):  #portions means how much we want to devide the set. type zero means training set or validation set. type one means testing set.
     # "rb" is read only
     csvReader = csv.reader(open(fileName,"rb"),delimiter=',') 
     data = list(csvReader)
     tlength=len(data)
     dlength= len(data[0])
+    plength= tlength/portion
+    data = data[:tlength]
     examples=[]
     if type==0:
         Dis_Cons = []
@@ -66,7 +68,7 @@ def readFile(fileName,type):
         for i in range(0,dlength-1):
             examples[2].append(False)
         # Turn str to int or float
-        for i in range(1,tlength):
+        for i in range(1,plength):
             examples.append([])
             for j in range(0,dlength):
                 if data[i][j]!='?':
@@ -161,7 +163,7 @@ def readFile(fileName,type):
         examples.append([])
         for i in range(0,dlength-1):
             examples[2].append(False)
-        for i in range(1,tlength):
+        for i in range(1,plength):
             examples.append([])
             for j in range(0,dlength-1):
                 if data[i][j]!='?':
@@ -194,7 +196,12 @@ def prettify(elem):
 def generateXMLLoop(root,topTag):
     for child in root.children:
         childTag = SubElement(topTag, child.name)
-        childTag.text = "0"
+        if child.parentRule[0] == "=":
+            childTag.text = root.name + " equal "+child.parentRule[1:]
+        elif child.parentRule[0] == ">":
+            childTag.text = root.name + " above "+child.parentRule[1:]
+        else: 
+            childTag.text = root.name + " below "+child.parentRule[1:]
         generateXMLLoop(child,childTag)
 
 def generateXMLFile(root):
@@ -207,13 +214,13 @@ def generateXMLFile(root):
 
 
 
-def solve(fileName,gapNum):
-    examples = readFile(fileName, 0)
+def solve(fileName,gapNum,portion):
+    examples = readFile(fileName, 0,portion) 
     root = TreeNode(examples,None,"",max((len(examples)-3)*0.001,1),gapNum)
     return root
 
 def validation(fileName,root):
-    testdata = readFile(fileName, 0)
+    testdata = readFile(fileName, 0,1) #do not forget to add portion as 1.
     stat =[]
     missum=0#total wrong.
     root.validate(testdata,stat)
