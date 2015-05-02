@@ -252,21 +252,25 @@ def generateTest(fileName, root):
 def pruningAll(fileName,root):
     validation(fileName,root)
     root.calcImprGloValue()
-    pruning(root)
+    print str(pruning(root)) + " subtrees pruned!!"
 
 def pruning(root):
     if root.name != "Good" and root.name != "Bad":
         if (root.imprValue > 0) and (root.imprValue >= root.imprGloValue):
             root.children = []
             root.rule = []
-            print "a node is pruned"
+            #print "a node is pruned"
             if root.isGood:
                 root.name = "Good"
             else:
                 root.name = "Bad"
+            return 1
         else:
+            sum = 0
             for child in root.children:
-                pruning(child)  
+                sum += pruning(child) 
+            return sum
+    return 0
 
 def calcNodeNum(root):
     sum = 1
