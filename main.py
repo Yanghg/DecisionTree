@@ -215,17 +215,11 @@ def output(examples):
     for item in examples:
         writer.writerow(item)
 
-<<<<<<< HEAD
 #This function create a decision tree from a training set "fileName", 
 #gapNum is a parameter for selecting continuous attributes  
 #portion is used to decide how much of the training set we use
 def solve(fileName,gapNum = 10,portion = 1):
     examples = readFile(fileName, 0,portion) 
-=======
-
-def solve(fileName,gapNum,portion):
-    examples = readFile(fileName, 0, portion) 
->>>>>>> origin/master
     root = TreeNode(examples,None,"",max((len(examples)-3)*0.001,1),gapNum)
     return root
 
