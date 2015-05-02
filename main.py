@@ -1,4 +1,5 @@
 #-*- coding: UTF-8 -*-
+import sys
 import csv
 from xml.etree import ElementTree
 from xml.dom import minidom
@@ -181,9 +182,6 @@ def readFile(fileName,type,portion):  #portions means how much we want to devide
             counterz+=1
         if len(examples[-1])==0:
             del examples[-1]
-
-
-
     return examples
 
 def prettify(elem):
@@ -212,7 +210,12 @@ def generateXMLFile(root):
     tree = ET.ElementTree(rootTag)
     tree.write("results.xml")
 
-
+def output(examples):
+    csvfile = open('labeled.csv', 'w')
+    writer = csv.writer(csvfile,delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL)
+    #writer = csv.writer(sys.stdout)
+    for item in examples:
+        writer.writerow(item)
 
 
 def solve(fileName,gapNum,portion):
