@@ -1,4 +1,5 @@
 #-*- coding: UTF-8 -*-
+import sys
 import csv
 from xml.etree import ElementTree
 from xml.dom import minidom
@@ -7,6 +8,10 @@ import xml.etree.cElementTree as ET
 from decisiontree import TreeNode
 
 #examples = [["aa","bb","cc"],[True,False,True],[False,True,False],[1 2 3],[4 5 6]....[7 8 9]]
+
+TRAIN = 0
+PRUNING = 1
+TEST = 2
 
 
 def handleAttribute(examples, name):
@@ -181,9 +186,6 @@ def readFile(fileName,type,portion):  #portions means how much we want to devide
             counterz+=1
         if len(examples[-1])==0:
             del examples[-1]
-
-
-
     return examples
 
 def prettify(elem):
@@ -212,7 +214,12 @@ def generateXMLFile(root):
     tree = ET.ElementTree(rootTag)
     tree.write("results.xml")
 
-
+def output(examples):
+    csvfile = open('labeled.csv', 'w')
+    writer = csv.writer(csvfile,delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL)
+    #writer = csv.writer(sys.stdout)
+    for item in examples:
+        writer.writerow(item)
 
 
 def solve(fileName,gapNum,portion):
@@ -231,6 +238,16 @@ def validation(fileName,root):
     accuracy=float(missum)/float(len(testdata)-3)
     accuracy=1-accuracy
     return accuracy
+
+
+def generateTest(fileName, root):
+    examples = readFile(fileName, 1)
+    for dataIndex in range(3, len(examples)):
+        outcome = root.generateOutcome(examples[dataIndex], examples)
+        examples[dataIndex].append(outcome)
+    del examples[1]
+    del examples[1]
+    return examples
 
 def pruningAll(fileName,root):
     validation(fileName,root)

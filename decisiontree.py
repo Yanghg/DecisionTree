@@ -216,6 +216,24 @@ class TreeNode:
         self.calcImprValue(examples,validateWrong)
         
 
+    def generateOutcome(self,exampleData,examples):
+        
+        if self.name=='Good':
+            return 'Good'
+        elif self.name=='Bad':
+            return 'Bad'
+        else:
+            index = examples[0].index(self.name)
+            for child in self.children:
+                if examples[1][index] == True:
+                    if self.child.parentRule[1:] == str(exampleData[index]):
+                        self.child.generateOutcome(exampleData,examples)
+                elif examples[1][index] == False:
+                    if self.child.parentRule[0] == "<" and exampleData[index] < float(self.child.parentRule[1:]):
+                        self.child.generateOutcome(exampleData,examples)
+                    elif self.child.parentRule[0] == ">" and exampleData[index] >= float(self.child.parentRule[1:]):
+                        self.child.generateOutcome(exampleData,examples)                
+
     def getDNF(self, count):
         
         if self.name == "Good" and self.parent == None:

@@ -11,7 +11,8 @@ for i in range(1,11):
 
 root = solve("btrain.csv",10,1)
 
+
 #print validation("bvalidate.csv", root)
-#print printDNF(root)
+print printDNF(root)
 
 
